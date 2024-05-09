@@ -1,21 +1,25 @@
 using System;
 
+//makes the Resume file public for useing in other documents in directory
 public class Resume
 {
-    public string _name;
+    //makes the Inputed_name string public
+    public string Inputed_name;
 
-    // Make sure to initialize your list to a new List before you use it.
+    // initializes list
     public List<Job> _jobs = new List<Job>();
 
+    //makes Display public 
     public void Display()
     {
-        Console.WriteLine($"Name: {_name}");
-        Console.WriteLine("Jobs:");
+        //wrights the name and _jobs into the consel
+        Console.WriteLine($"Name: {Inputed_name}");
+        Console.WriteLine("_jobs:");
 
-        // Notice the use of the custom data type "Job" in this loop
+        // prints out each job in the loop
         foreach (Job job in _jobs)
         {
-            // This calls the Display method on each job
+            // Displays each Job in the loop
             job.Display();
         }
     }

@@ -1,14 +1,16 @@
 using System;
 
+//makes the job file publick
 public class Job
 {
-    public string _jobTitle;
+    //makes public stings
+    public string _jobtTitle;
     public string _company;
-    public int _startYear;
-    public int _endYear;
+    public int _startingYear;
+    public int _endingYear;
 
     public void Display()
     {
-        Console.WriteLine($"{_jobTitle} ({_company}) {_startYear}-{_endYear}");
+        Console.WriteLine($"{_jobtTitle} ({_company}) {_startingYear}-{_endingYear}");
     }
 }
