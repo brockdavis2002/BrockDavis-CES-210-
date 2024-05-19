@@ -1,0 +1,6 @@
+2024-05-18|Who was the most interesting person I interacted with today?|test|test
+2024-05-18|What was the hardest and worst part of my day?|test2|test2
+2024-05-18|What was the best part of my day?|test3|test3
+2024-05-18|What was the best part of my day?|test4|test4
+2024-05-18|What was the hardest and worst part of my day?|test5|test5
+2024-05-18|What was the hardest and worst part of my day?|test6|test6
