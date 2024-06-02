@@ -24,3 +24,21 @@ public class Word
         return Hidden ? "_____" : Text;//returns___ if hiden
     }
 }
+public class Reference
+{
+    public string Book { get; }
+    public int Chapter { get; }
+    public string Verse { get; }
+
+    public Reference(string book, int chapter, string verse)
+    {
+        Book = book;
+        Chapter = chapter;
+        Verse = verse;
+    }
+
+    public override string ToString()
+    {
+        return $"{Book} {Chapter}:{Verse}";
+    }
+}

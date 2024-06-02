@@ -52,4 +52,5 @@ public class Verse
         Text = OriginalText; // Reset the text to its original state
         Hidden = false; // Reset hidden flag
     }
+    
 }
