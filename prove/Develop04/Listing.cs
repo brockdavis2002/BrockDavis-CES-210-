@@ -14,8 +14,12 @@ namespace MindfulnessApp
         }
 
         // Method to perform the listing activity
-        public void PerformListing()
+        private void PerformListing()
         {
+            Animation.Spinner(3); // Display spinner for 3 seconds
+
+
+
             string[] prompts = {
                 "Who are people that you appreciate?",
                 "What are personal strengths of yours?",
@@ -35,7 +39,7 @@ namespace MindfulnessApp
                 Task.Delay(secondsLeft * 1000).Wait(); // Wait for duration
                 timeUp = true;
             });
-
+            Animation.Spinner(3); // Display spinner for 3 seconds
             Console.WriteLine(prompt); // Display the prompt
             Console.WriteLine("Start listing items now...");
 
@@ -45,7 +49,6 @@ namespace MindfulnessApp
                 lock (lockObj)
                 {
                     Console.SetCursorPosition(0, Console.CursorTop); // Move cursor to beginning of the current line
-                    
                 }
 
                 Console.Write("Item: ");
@@ -59,6 +62,8 @@ namespace MindfulnessApp
 
             Console.WriteLine(); // Move to next line for clarity
             Console.WriteLine($"You have listed {itemCount} items.");
+
+            Animation.Spinner(2); // Display spinner for 2 seconds
         }
 
         // Override the StartActivity method to include the listing performance

@@ -9,6 +9,7 @@ namespace MindfulnessApp
             while (true)
             {
                 Console.Clear();
+                Animation.Spinner(3); // Display spinner for 3 seconds
                 Console.WriteLine("Welcome to the Mindfulness App!");
                 Console.WriteLine("This app helps you relax and reflect through guided activities.");
                 Console.WriteLine("Choose an activity to get started:");
@@ -25,23 +26,30 @@ namespace MindfulnessApp
                 {
                     case "1":
                         Breathing breathing = new Breathing();
+                        Console.WriteLine("Starting Breathing Activity...");
                         breathing.StartActivity();
                         break;
                     case "2":
                         Reflecting reflecting = new Reflecting();
+                        Console.WriteLine("Starting Reflecting Activity...");
                         reflecting.StartActivity();
                         break;
                     case "3":
                         Listing listing = new Listing();
+                        Console.WriteLine("Starting Listing Activity...");
                         listing.StartActivity();
                         break;
                     case "4":
                         return;
                     default:
                         Console.WriteLine("Invalid choice. Please select again.");
+                        
                         break;
                 }
+
                 Console.WriteLine(); // Add a blank line after each selection for readability
+                Console.WriteLine("Press Enter to continue...");
+                Console.ReadLine(); // Wait for user input to proceed
             }
         }
     }

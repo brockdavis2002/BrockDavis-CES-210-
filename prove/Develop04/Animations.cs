@@ -26,7 +26,6 @@ namespace MindfulnessApp
         }
 
         // Method to show a countdown animation for a given duration in seconds
-        // Method to show a countdown animation with cycling dots and countdown display
         public static void Countdown(int seconds)
         {
             for (int i = seconds; i > 0; i--)

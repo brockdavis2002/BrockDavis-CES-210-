@@ -4,6 +4,7 @@ namespace MindfulnessApp
 {
     public class Reflecting : Activity
     {
+        
         private string[] prompts = {
             "Think of a time when you stood up for someone else.",
             "Think of a time when you did something really difficult.",
@@ -30,9 +31,10 @@ namespace MindfulnessApp
         }
 
         // Method to perform the reflecting activity
-        public void PerformReflecting()
+        private void PerformReflecting()
         {
-            Random random = new Random();
+            Animation.Spinner(3); // Display spinner for 3 seconds
+
 
             // Ask for the number of questions
             Console.Write("Enter the number of questions you want to answer: ");
@@ -44,7 +46,7 @@ namespace MindfulnessApp
             int questionDuration = Duration / numberOfQuestions; // Calculate duration per question
 
             // Display the prompt and wait for the user to be ready
-            string prompt = prompts[random.Next(prompts.Length)];
+            string prompt = prompts[new Random().Next(prompts.Length)];
             Console.WriteLine($"Consider the following prompt:\n{prompt}");
             Console.WriteLine("When you have something in mind, press Enter to continue... ");
             Animation.WaitForEnterWithAnimation(); // Wait for the user to press Enter with animation
@@ -57,12 +59,11 @@ namespace MindfulnessApp
 
             for (int i = 0; i < numberOfQuestions; i++)
             {
-                string question = questions[random.Next(questions.Length)];
+                string question = questions[new Random().Next(questions.Length)];
                 Console.WriteLine($"{i + 1}. {question}"); // Display question number and text
                 Console.WriteLine(); // Blank line for readability
 
                 DateTime questionEndTime = DateTime.Now.AddSeconds(questionDuration);
-
                 while (DateTime.Now < questionEndTime)
                 {
                     // Display countdown animation from Animation class
@@ -71,6 +72,8 @@ namespace MindfulnessApp
 
                 Console.Clear(); // Clear the console after each question
             }
+
+            Animation.Spinner(2); // Display spinner for 2 seconds
         }
 
         // Override the StartActivity method to include the reflecting performance
