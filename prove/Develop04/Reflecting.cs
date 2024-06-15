@@ -37,7 +37,9 @@ namespace MindfulnessApp
 
 
             // Ask for the number of questions
+            Console.Write(" "); //spacer
             Console.Write("Enter the number of questions you want to answer: ");
+            Console.Write(" ");//spacer
             if (!int.TryParse(Console.ReadLine(), out int numberOfQuestions) || numberOfQuestions <= 0)
             {
                 numberOfQuestions = 5; // Default to 5 questions if input is invalid or zero
@@ -48,6 +50,7 @@ namespace MindfulnessApp
             // Display the prompt and wait for the user to be ready
             string prompt = prompts[new Random().Next(prompts.Length)];
             Console.WriteLine($"Consider the following prompt:\n{prompt}");
+            Console.WriteLine(" ");//spacer
             Console.WriteLine("When you have something in mind, press Enter to continue... ");
             Animation.WaitForEnterWithAnimation(); // Wait for the user to press Enter with animation
 

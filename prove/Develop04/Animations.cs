@@ -100,7 +100,6 @@ namespace MindfulnessApp
         {
             int totalDots = 5; // Maximum number of dots
 
-            Console.WriteLine(); // Blank line for readability
             while (!Console.KeyAvailable || Console.ReadKey(true).Key != ConsoleKey.Enter)
             {
                 // Adding dots
@@ -131,7 +130,6 @@ namespace MindfulnessApp
                 Console.WriteLine();
                 Console.WriteLine("Breathe out... ");
                 Countdown(breatheOutSeconds); // Countdown for breathing out
-                Console.WriteLine();
                 Console.WriteLine(); // Blank line for readability
             }
         }

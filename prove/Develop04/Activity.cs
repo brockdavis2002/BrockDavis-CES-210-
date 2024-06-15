@@ -15,8 +15,8 @@ namespace MindfulnessApp
 
         protected void SetDuration()
         {
-            Animation.Spinner(5); // Display spinner for 5 seconds
-            Console.Write("Enter duration in seconds (default is 300 seconds or 5 minutes): ");
+            Animation.Spinner(3); // Display spinner for 5 seconds
+            Console.Write("Enter duration in seconds (default is 300 seconds or 5 minutes minimum for some 10 seconds): ");
             if (!int.TryParse(Console.ReadLine(), out int duration) || duration <= 0)
             {
                 duration = 300; // Default to 5 minutes if invalid input
