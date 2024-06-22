@@ -1,9 +1,9 @@
-using System;
-
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello Sandbox World!");
+        Console.Clear();
+        Menu menu = new Menu();
+        menu.RunMenu();
     }
 }
