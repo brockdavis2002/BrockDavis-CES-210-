@@ -1,0 +1,4 @@
+4
+SimpleGoal|simple|2|False
+ChecklistGoal|Checklist|1|3|0|20
+EternalGoal|Eternal|2|2|6/29/2024 5:00:42 PM
