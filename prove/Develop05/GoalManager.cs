@@ -123,6 +123,36 @@ namespace EternalQuest
         {
             //gets current score from save data to display
             Console.WriteLine($"Your current score is: {score}");
+            
+            //for creativity i created code to show where you are standing 
+            if (score == 0) {
+                Console.WriteLine ("Your at 0 Serisly Zero thats litrery nothing Come back after doing some goles");
+            }
+            else if (score <= 5) {
+                Console.WriteLine ($"Your Score is At {score} better than 0 you Are doing better Dont stop now elce you are Stuck Like Nephis Brothers");
+            }
+            else if (score <= 10) {
+                Console.WriteLine ($"Your Score is At {score} you are inproving Greatly over time Keep it up ");
+            }
+            else if (score <= 25) {
+                Console.WriteLine ($"Your Score is At {score} better than last time You are Doing Great");
+            }
+            else if (score <=50) {
+                Console.WriteLine ($"Your Score is at {score} You have made it a long ways Congrats about half way to 100 =)");
+            }
+            else if (score == 69) {
+                Console.WriteLine ($"Currently your score is 69 (Nice) You are seeing this as a hiden message congrats");
+            }
+            else if (score <= 99) {
+                Console.WriteLine ($"wow your almost to 100");
+            }
+            else if (score == 100) {
+                Console.WriteLine ($"Congrats You made it to 100 i never would have thought you made it this far");
+                Console.WriteLine ("For you are Truly of Nephi of old");
+            }
+            else{
+                Console.WriteLine("Nice Job Nothing elce to say Here keep up the Hard work Never Give up");
+            }
             Console.WriteLine("Press any key to return to the main menu...");
             Console.ReadKey();
         }
