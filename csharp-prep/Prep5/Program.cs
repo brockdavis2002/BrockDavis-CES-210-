@@ -29,7 +29,7 @@ class Program
     static void WelcomeMassage()
     {
         //prints a wecome message to the user 
-        Console.WriteLine("Welcome to my program!");
+        Console.WriteLine("Welcome to my program🐄!");
     }
 
 //function for inputing the users name
