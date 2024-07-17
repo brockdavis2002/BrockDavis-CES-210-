@@ -157,7 +157,7 @@ private void InitializeGame()
         private void HandleRandomEvent()
         {
             // Simulate a random event each turn
-            int randomEvent = random.Next(1, 5); // Example: 1-4 for different types of events
+            int randomEvent = random.Next(1, 3); // Example: 1-4 for different types of events
 
             switch (randomEvent)
             {
@@ -174,10 +174,6 @@ private void InitializeGame()
                 case 3:
                     Event disaster = new Disaster();
                     player.HandleEvent(disaster);
-                    break;
-                case 4:
-                    Event riverCrossing = new RiverCrossing();
-                    player.HandleEvent(riverCrossing);
                     break;
             }
         }

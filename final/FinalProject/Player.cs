@@ -36,7 +36,12 @@ namespace OregonTrailGame
         public void Rest()
         {
             Console.WriteLine("You rest and regain some health.");
-            Health += 10;
+            //rest resets health if below 100%
+            if (Health < 100)
+                Health = 100;
+            //prevents you from getting over 100%
+            else
+                Console.WriteLine("You are alredy at 100% health");
             Console.WriteLine($"Health is now {Health}");
         }
 
