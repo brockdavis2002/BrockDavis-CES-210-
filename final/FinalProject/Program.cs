@@ -1,10 +1,13 @@
 using System;
 
-class Program
+namespace OregonTrailGame
 {
-    static void Main(string[] args)
+    class Program
     {
-        Console.WriteLine("𓃽");
-       
+        static void Main(string[] args)
+        {
+            Game game = new Game();
+            game.Start();
+        }
     }
 }
