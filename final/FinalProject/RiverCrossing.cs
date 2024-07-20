@@ -1,5 +1,5 @@
 using System;
-
+using System.Text;
 namespace OregonTrailGame
 {
     public class RiverCrossing : Event
@@ -13,7 +13,8 @@ namespace OregonTrailGame
 
         public override void Occur(Player player)
         {
-            Console.WriteLine($"You have reached the river: {river.Name}");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"You have reached the river: {river.Name}💦");
             river.Visit(player);
         }
     }

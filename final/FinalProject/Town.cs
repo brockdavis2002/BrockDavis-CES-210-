@@ -1,9 +1,11 @@
 using System;
-
+using System.Text;
 namespace OregonTrailGame
 {
     public class Town : Location
     {
+        
+        
         private const int MoneyAtTown = 25; // Amount of money earned at each town visit
         private const int FoodPrice = 15; // Price per unit of food
         private const int AmmoPrice = 10; // Price per unit of ammo
@@ -14,16 +16,18 @@ namespace OregonTrailGame
 
         public override void Visit(Player player)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine($"You have arrived at {Name}.");
-            Console.WriteLine("Welcome to town!");
+            Console.WriteLine($"Welcome to town!🏠");
 
             Interact(player); // Call the interact method for player interaction
         }
 
         public void Interact(Player player)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine($"Welcome to {Name}!");
-            Console.WriteLine("You can buy supplies here.");
+            Console.WriteLine($"You can buy supplies here.🛒");
 
             // Add money for visiting the town
             player.Inventory.AddMoney(MoneyAtTown);
@@ -44,18 +48,20 @@ namespace OregonTrailGame
 
         private void DisplayInventoryStatus(Player player)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("\nCurrent Inventory Status:");
-            Console.WriteLine($"Money: ${player.Inventory.GetMoney()}");
-            Console.WriteLine($"Food: {player.Inventory.GetFood()} units");
-            Console.WriteLine($"Ammo: {player.Inventory.GetAmmo()} units");
+            Console.WriteLine($"Money: ${player.Inventory.GetMoney()}💲");
+            Console.WriteLine($"Food: {player.Inventory.GetFood()} units🍖");
+            Console.WriteLine($"Ammo: {player.Inventory.GetAmmo()} units🔫");
         }
 
         private bool BuySupplies(Player player)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("\nWhat would you like to do?");
-            Console.WriteLine("1. Buy Food");
-            Console.WriteLine("2. Buy Ammo");
-            Console.WriteLine("3. Leave Town");
+            Console.WriteLine($"1. Buy Food🍖");
+            Console.WriteLine($"2. Buy Ammo🔫");
+            Console.WriteLine($"3. Leave Town🐂");
 
             int choice = GetPlayerChoice(1, 3);
 
@@ -79,19 +85,22 @@ namespace OregonTrailGame
 
         private void BuyFood(Player player)
         {
-            Console.Write($"Enter amount of food to buy (${FoodPrice} each): ");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.Write($"Enter amount of food to buy (${FoodPrice} each):🍖 ");
             if (int.TryParse(Console.ReadLine(), out int amountToBuy) && amountToBuy > 0)
             {
                 int totalCost = amountToBuy * FoodPrice;
 
                 if (player.Inventory.SpendMoney(totalCost))
                 {
+                    Console.OutputEncoding = System.Text.Encoding.UTF8;
                     player.Inventory.AddFood(amountToBuy);
-                    Console.WriteLine($"You bought {amountToBuy} units of food.");
+                    Console.WriteLine($"You bought {amountToBuy} units of food.🍖");
                 }
                 else
                 {
-                    Console.WriteLine("Not enough money to buy the food.");
+                    Console.OutputEncoding = System.Text.Encoding.UTF8;
+                    Console.WriteLine($"Not enough money to buy the food🤑.");
                 }
             }
             else
@@ -102,19 +111,22 @@ namespace OregonTrailGame
 
         private void BuyAmmo(Player player)
         {
-            Console.Write($"Enter amount of ammo to buy (${AmmoPrice} each): ");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.Write($"Enter amount of ammo to buy (${AmmoPrice} each):🔫 ");
             if (int.TryParse(Console.ReadLine(), out int amountToBuy) && amountToBuy > 0)
             {
                 int totalCost = amountToBuy * AmmoPrice;
 
                 if (player.Inventory.SpendMoney(totalCost))
                 {
+                    Console.OutputEncoding = System.Text.Encoding.UTF8;
                     player.Inventory.AddAmmo(amountToBuy);
-                    Console.WriteLine($"You bought {amountToBuy} units of ammo.");
+                    Console.WriteLine($"You bought {amountToBuy} units of ammo.🔫");
                 }
                 else
                 {
-                    Console.WriteLine("Not enough money to buy the ammo.");
+                    Console.OutputEncoding = System.Text.Encoding.UTF8;
+                    Console.WriteLine($"Not enough money to buy the ammo.🤑");
                 }
             }
             else

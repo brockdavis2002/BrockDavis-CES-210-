@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace OregonTrailGame
 {
@@ -13,7 +14,8 @@ namespace OregonTrailGame
 
         public bool Hunt(Inventory inventory)
         {
-            Console.WriteLine("You hunt for food.");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"You hunt for food.🦬");
 
             int huntOutcome = random.Next(1, 11); // Random number between 1 and 10
 
@@ -21,20 +23,22 @@ namespace OregonTrailGame
             {
                 if (huntOutcome <= 7) // 70% chance of success
                 {
+                    Console.OutputEncoding = System.Text.Encoding.UTF8;
                     int foodFound = random.Next(10, 31); // Random amount between 10 and 30
                     inventory.AddFood(foodFound);
-                    Console.WriteLine($"You found {foodFound} units of food.");
+                    Console.WriteLine($"You found {foodFound} units of food.🍖");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("You couldn't find any food this time.");
+                    Console.WriteLine($"You couldn't find any food this time.🍴");
                     return false;
                 }
             }
             else
             {
-                Console.WriteLine("You are out of ammo!");
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.WriteLine($"You are out of ammo!😭");
                 return false;
             }
         }

@@ -1,5 +1,5 @@
 using System;
-
+using System.Text;
 namespace OregonTrailGame
 {
     public abstract class Disaster : Event

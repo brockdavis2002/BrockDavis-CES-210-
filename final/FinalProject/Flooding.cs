@@ -1,5 +1,5 @@
 using System;
-
+using System.Text;
 namespace OregonTrailGame
 {
     public class Flooding : Disaster
@@ -10,9 +10,11 @@ namespace OregonTrailGame
 
         protected override void HandleDisaster()
         {
-            Console.WriteLine("Your wagon is submerged in water.");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"Your wagon is submerged in water.🌊");
             int repairTurns = random.Next(1, 4);
-            Console.WriteLine($"You need to spend {repairTurns} turns repairing the wagon.");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"You need to spend {repairTurns}😥 turns repairing the wagon.");
             // Add logic to reduce the number of turns
         }
     }

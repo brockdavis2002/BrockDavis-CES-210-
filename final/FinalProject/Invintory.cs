@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Text;
 namespace OregonTrailGame
 {
     [Serializable]
@@ -69,7 +69,7 @@ namespace OregonTrailGame
             }
             else
             {
-                Console.WriteLine("Not enough money!");
+                Console.WriteLine("Not enough money!😭");
                 return false;
             }
         }
@@ -112,10 +112,11 @@ namespace OregonTrailGame
 
         public void DisplayInventory()
         {
-            Console.WriteLine($"Food: {food} units");
-            Console.WriteLine($"Ammo: {ammo} units");
-            Console.WriteLine($"Money: ${money}");
-            Console.WriteLine("\nParty Members Alive:");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"Food: {food} units🍖");
+            Console.WriteLine($"Ammo: {ammo} units🔫");
+            Console.WriteLine($"Money: ${money}.🤑");
+            Console.WriteLine("\nParty Members Alive👨‍👩‍👧‍👦:");
             foreach (var member in PartyMembers)
             {
                 Console.WriteLine(member);

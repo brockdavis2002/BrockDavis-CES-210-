@@ -1,5 +1,5 @@
 using System;
-
+using System.Text;
 namespace OregonTrailGame
 {
     public class NativeAmericanAttack : Disaster
@@ -10,17 +10,20 @@ namespace OregonTrailGame
 
         protected override void HandleDisaster()
         {
-            Console.WriteLine("You are attacked by Native Americans.");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"You are attacked by Native Americans.😰");
                         // Example consequence: party member injured or kidnapped
             if (random.NextDouble() < 0.2) // 20% chance of injury
             {
-                Console.WriteLine("A party member has been injured.");
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.WriteLine($"A party member has been injured.🤕");
                 int injuredMemberIndex = random.Next(player.Inventory.PartyMembers.Count);
                 Console.WriteLine($"{player.Inventory.PartyMembers[injuredMemberIndex]} is injured.");
             }
             else
             {
-                Console.WriteLine("A party member has been kidnapped!");
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.WriteLine($"A party member has been kidnapped!😭");
 
                 // Player must decide to search or leave
                 Console.WriteLine("1. Search for the kidnapped member");
@@ -34,18 +37,20 @@ namespace OregonTrailGame
 
                     if (random.NextDouble() < 0.5) // 50% chance of finding
                     {
-                        Console.WriteLine("You found the kidnapped member.");
+                        Console.WriteLine($"You found the kidnapped member.🎊");
                     }
                     else
                     {
-                        Console.WriteLine("You failed to find the kidnapped member.");
+                        Console.OutputEncoding = System.Text.Encoding.UTF8;
+                        Console.WriteLine($"You failed to find the kidnapped member.💀");
                         player.Inventory.ReducePartyCount();
                         player.Inventory.PartyMembers.RemoveAt(random.Next(player.Inventory.PartyMembers.Count));
                     }
                 }
                 else
                 {
-                    Console.WriteLine("You chose to leave the kidnapped member behind.");
+                    Console.OutputEncoding = System.Text.Encoding.UTF8;
+                    Console.WriteLine($"You chose to leave the kidnapped member behind.💀");
                     player.Inventory.ReducePartyCount();
                     player.Inventory.PartyMembers.RemoveAt(random.Next(player.Inventory.PartyMembers.Count));
                 }

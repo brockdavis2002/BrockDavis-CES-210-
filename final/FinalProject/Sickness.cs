@@ -1,5 +1,5 @@
 using System;
-
+using System.Text;
 namespace OregonTrailGame
 {
     public class Sickness : Event
@@ -16,19 +16,22 @@ namespace OregonTrailGame
 
         public override void Occur(Player player)
         {
-            Console.WriteLine("A family member has fallen sick!");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"A family member has fallen sick!🤒🤮");
 
             // Randomly select a family member to be sick
             int sickMemberIndex = random.Next(player.FamilyMembers.Count);
             string sickMember = player.FamilyMembers[sickMemberIndex];
-            Console.WriteLine($"{sickMember} is sick!");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"{sickMember} is sick!🤒");
 
             // Determine random number of turns required to rest
             requiredRestTurns = random.Next(1, 6);
             Console.WriteLine($"You need to rest for {requiredRestTurns} turns to treat the sickness.");
 
-            Console.WriteLine("1. Rest");
-            Console.WriteLine("2. Ignore");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"1. Rest😴");
+            Console.WriteLine($"2. Keep Going😥");
 
             int choice = GetPlayerChoice(1, 2);
 
@@ -44,18 +47,20 @@ namespace OregonTrailGame
 
         private void Rest(string sickMember, int sickMemberIndex)
         {
-            Console.WriteLine("You chose to rest. Each turn will consume some food.");
+            Console.WriteLine($"You chose to rest. Each turn will consume some food.🍖");
 
             int turnsRested = 0;
             while (turnsRested < requiredRestTurns)
             {
                 if (!player.Inventory.ConsumeFood(5)) // Consuming 5 units of food per resting turn
                 {
-                    Console.WriteLine("Not enough food to continue resting!");
+                    Console.OutputEncoding = System.Text.Encoding.UTF8;
+                    Console.WriteLine("Not enough food to continue resting!🤒");
                     break;
                 }
 
-                Console.WriteLine($"Resting... {requiredRestTurns - turnsRested} turns remaining.");
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.WriteLine($"😴Resting... {requiredRestTurns - turnsRested} turns remaining.");
                 turnsRested++;
 
                 // Simulate passing of turns
@@ -64,7 +69,7 @@ namespace OregonTrailGame
                 // Check if required rest turns have been completed
                 if (turnsRested >= requiredRestTurns)
                 {
-                    Console.WriteLine($"{sickMember} has recovered from sickness.");
+                    Console.WriteLine($"{sickMember} has recovered from sickness.🎉");
                     return;
                 }
             }
@@ -75,18 +80,20 @@ namespace OregonTrailGame
 
         private void HandleDeath(string sickMember, int sickMemberIndex)
         {
-            Console.WriteLine($"{sickMember} has died due to lack of proper rest.");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"{sickMember} has died due to lack of proper rest.☠️");
             player.Inventory.ReducePartyCount(); // Reduce party count as a member has died
             player.FamilyMembers.RemoveAt(sickMemberIndex); // Remove the deceased member from the list
 
             if (player.Inventory.PartyCount == 0)
             {
-                Console.WriteLine("All party members are dead. Game Over.");
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.WriteLine($"All party members are dead. Game Over.☠️");
                 Environment.Exit(0); // End the game if all party members are dead
             }
-
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             // Add to score (turns)
-            Console.WriteLine("You lose a turn due to the sickness.");
+            Console.WriteLine($"You lose a turn due to the sickness.🤒🤮");
         }
 
         private int GetPlayerChoice(int min, int max)

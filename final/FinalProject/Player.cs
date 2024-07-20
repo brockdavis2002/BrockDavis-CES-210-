@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Text;
 namespace OregonTrailGame
 {
     [Serializable]
@@ -34,30 +34,32 @@ namespace OregonTrailGame
 
         public void Rest(int turns)
         {
-            Console.WriteLine($"You rest for {turns} turns and regain some health.");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"You rest for {turns} turns and regain some health❤️‍🩹.");
 
             for (int i = 0; i < turns; i++)
             {
                 if (!Inventory.ConsumeFood(10)) // Consuming 10 units of food per resting turn
                 {
-                    Console.WriteLine("Not enough food to continue resting!");
+                    Console.WriteLine($"Not enough food to continue resting!🍖");
                     break;
                 }
-
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
                 Health += 10; // Regain health per turn
                 if (Health > 100) Health = 100; // Cap health at 100%
-                Console.WriteLine($"Health is now {Health}.");
+                Console.WriteLine($"Health is now {Health}.❤️‍🩹");
                 System.Threading.Thread.Sleep(500); // Simulate the passage of time
             }
         }
 
         public void CheckSupplies()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
             Console.WriteLine("Current Supplies:");
             Inventory.DisplayInventory();
-            Console.WriteLine($"\nMoney: ${Money}");
-            Console.WriteLine("\nFamily Members:");
+            Console.WriteLine($"\nMoney: ${Money}💲");
+            Console.WriteLine($"\nFamily Members:👨‍👩‍👧‍👦");
             foreach (var member in FamilyMembers)
             {
                 Console.WriteLine(member);
@@ -74,20 +76,23 @@ namespace OregonTrailGame
 
         public void AddMoney(int amount)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Money += amount;
-            Console.WriteLine($"Added ${amount}. Money now: ${Money}");
+            Console.WriteLine($"Added ${amount}. Money now: ${Money}💲");
         }
 
         public void SpendMoney(int amount)
         {
             if (Money >= amount)
             {
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
                 Money -= amount;
-                Console.WriteLine($"Spent ${amount}. Money left: ${Money}");
+                Console.WriteLine($"Spent ${amount}. Money left: ${Money}💲");
             }
             else
             {
-                Console.WriteLine("Not enough money!");
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.WriteLine($"Not enough money!😭");
             }
         }
 
@@ -95,11 +100,12 @@ namespace OregonTrailGame
         {
             if (FamilyMembers.Remove(memberName))
             {
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
                 Inventory.ReducePartyCount();
-                Console.WriteLine($"{memberName} has died.");
+                Console.WriteLine($"{memberName} has died.🪦");
                 if (Inventory.PartyCount == 0)
                 {
-                    Console.WriteLine("All party members are dead. Game Over.");
+                    Console.WriteLine($"All party members are dead. Game Over.💀");
                     Environment.Exit(0); // End the game if all party members are dead
                 }
             }

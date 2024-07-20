@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
-
 namespace OregonTrailGame
 {
     public class Game
@@ -13,6 +13,7 @@ namespace OregonTrailGame
         private Random random;
         private int turnsUntilNextTown;
         private ScoreManager scoreManager;
+        private GameProgress gameProgress; // Add this field
 
         public Game()
         {
@@ -44,6 +45,7 @@ namespace OregonTrailGame
             random = new Random();
             turnsUntilNextTown = random.Next(10, 21); // Random turns between 10 and 20
             scoreManager = new ScoreManager();
+            gameProgress = new GameProgress(locations.Count); // Initialize GameProgress
 
             Start();
         }
@@ -56,7 +58,9 @@ namespace OregonTrailGame
 
         private void InitializeGame()
         {
-            Console.WriteLine("Welcome to The Oregon Trail!");
+            Console.Clear();
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"🤠🐂Welcome to The Oregon Trail!🐂🤠");
 
             // Initialize player
             Console.Write("Enter your name: ");
@@ -66,7 +70,8 @@ namespace OregonTrailGame
             // Add family members
             for (int i = 1; i <= 4; i++)
             {
-                Console.Write($"Enter the name of family member {i}: ");
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.Write($"🙂Enter the name of family member {i}: ");
                 string familyMemberName = Console.ReadLine();
                 player.AddFamilyMember(familyMemberName);
             }
@@ -88,41 +93,63 @@ namespace OregonTrailGame
                 int foodConsumed = random.Next(1, 5) * player.Inventory.PartyCount; // Random amount per turn
                 if (!player.Inventory.ConsumeFood(foodConsumed))
                 {
-                    Console.WriteLine("You ran out of food! Game Over.");
+                    Console.WriteLine($"You ran out of food! Game Over.☠️");
                     gameOver = true;
                     break;
                 }
 
                 turnsUntilNextTown--;
 
-                if (turnsUntilNextTown == 0)
+                if (turnsUntilNextTown <= 0)
                 {
+                    // Move to the next location
                     currentLocationIndex++;
                     if (currentLocationIndex >= locations.Count)
                     {
-                        Console.WriteLine("You have reached Oregon City! Congratulations, you win!");
+                        Console.WriteLine($"You have reached Oregon City! Congratulations, you win!🐂🤠");
                         gameOver = true;
                         break;
                     }
                     else
                     {
                         Location currentLocation = locations[currentLocationIndex];
+
+                        // Visit the new location
                         currentLocation.Visit(player);
-                        if (currentLocation is Town)
+
+                        // Handle specific logic for towns
+                        if (currentLocation is Town town)
                         {
                             player.Inventory.AddMoney(25); // Add $25 at each town
+                            Console.WriteLine($"You have reached {town.Name}. You received $25.💲");
                         }
-                        turnsUntilNextTown = random.Next(10, 21); // Reset turns until next town
+
+                        // Reset the turns until next town
+                        turnsUntilNextTown = random.Next(5, 21); // Sets the number of moves between towns to between 5 and 20
+
+                        // Update game progress after reaching a town
+                        gameProgress.UpdateProgress(scoreManager.GetTurns()); // Update progress based on turn count
+
                     }
                 }
 
-                Console.Clear(); // Clear the console to prepare for the new input
+                // Clear the console
+                Console.Clear();
 
-                Console.WriteLine("1. Continue");
-                Console.WriteLine("2. Rest");
-                Console.WriteLine("3. Hunt");
-                Console.WriteLine("4. Check supplies");
-                Console.WriteLine("5. Save and Quit");
+                // Update and display the game progress bar
+                gameProgress.DisplayProgress(); // Display progress bar
+
+                // Display the number of moves until the next town and towns left
+                Console.WriteLine($"Moves until next town: {turnsUntilNextTown}🛖");
+                Console.WriteLine($"Towns left to reach: {locations.Count - currentLocationIndex - 1}");
+
+                // Display game menu
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.WriteLine($"1. Continue🐂");
+                Console.WriteLine($"2. Rest😴");
+                Console.WriteLine($"3. Hunt🍖");
+                Console.WriteLine($"4. Check supplies💼");
+                Console.WriteLine($"5. Save and Quit🚩");
 
                 int choice = GetPlayerChoice(1, 5);
                 string outcomeMessage = "";
@@ -133,7 +160,8 @@ namespace OregonTrailGame
                         outcomeMessage = "You choose to continue.";
                         break;
                     case 2:
-                        Console.Write("Enter number of turns to rest: ");
+                        Console.OutputEncoding = System.Text.Encoding.UTF8;
+                        Console.Write($"Enter number of turns to rest:💤 ");
                         if (int.TryParse(Console.ReadLine(), out int restTurns) && restTurns > 0)
                         {
                             player.Rest(restTurns);
@@ -157,12 +185,13 @@ namespace OregonTrailGame
                         break;
                     case 5:
                         SaveGame();
-                        Console.WriteLine("Game saved. Goodbye!");
+                        Console.OutputEncoding = System.Text.Encoding.UTF8;
+                        Console.WriteLine($"Game saved. Goodbye!👋");
                         gameOver = true;
-                        continue; // Skip clearing and ending the loop
+                        continue; // Skip the rest of the loop to end the game
                 }
 
-                // Handle random event each turn
+                // Handle random event each turn, but after town logic
                 if (choice != 5) // Only handle events if not saving
                 {
                     EventManager.HandleRandomEvent(player);
@@ -172,9 +201,6 @@ namespace OregonTrailGame
                 Console.WriteLine(outcomeMessage);
                 Console.WriteLine("\nPress Enter to continue...");
                 Console.ReadLine();
-
-                // Clear the console after pressing Enter
-                Console.Clear();
             }
 
             EndGame(); // End the game and show score

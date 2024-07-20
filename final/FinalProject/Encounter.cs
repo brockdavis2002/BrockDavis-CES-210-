@@ -1,5 +1,5 @@
 using System;
-
+using System.Text;
 namespace OregonTrailGame
 {
     public class Encounter : Event
@@ -41,8 +41,8 @@ namespace OregonTrailGame
             var inventory = player.Inventory;
             int amountStolen = random.Next(10, 51);
             int typeOfStolen = random.Next(1, 4); // 1: Food, 2: Ammo, 3: Money
-
-            Console.WriteLine("A bandit has appeared!");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"A bandit has appeared!😡");
 
             switch (typeOfStolen)
             {
@@ -63,10 +63,11 @@ namespace OregonTrailGame
 
         private void TraderEncounter(Player player)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             var inventory = player.Inventory;
-            Console.WriteLine("You meet a trader.");
-
-            Console.WriteLine("You can trade food for money or ammo.");
+            Console.WriteLine($"You meet a trader.🧐");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine("You can trade food for money or ammo.💲");
             Console.Write("Enter amount of food to trade: ");
             int foodToTrade = int.Parse(Console.ReadLine());
 
@@ -90,18 +91,20 @@ namespace OregonTrailGame
             // Generate random costs for food and ammo
             int costPerUnitFood = random.Next(1, 11); // Random cost between $1 and $10 per unit of food
             int costPerUnitAmmo = random.Next(1, 11); // Random cost between $1 and $10 per unit of ammo
-
-            Console.WriteLine("You meet a merchant.");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"You meet a merchant.🤑");
 
             // Display current supplies and money
             Console.WriteLine("\nCurrent Supplies:");
-            Console.WriteLine($"Food: {inventory.GetFood()} units");
-            Console.WriteLine($"Ammo: {inventory.GetAmmo()} units");
-            Console.WriteLine($"Money: ${inventory.GetMoney()}");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"Food: {inventory.GetFood()} units🍖");
+            Console.WriteLine($"Ammo: {inventory.GetAmmo()} units🔫");
+            Console.WriteLine($"Money: ${inventory.GetMoney()}💲");
 
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("\nYou can buy supplies from the merchant.");
-            Console.WriteLine("1. Buy Food");
-            Console.WriteLine("2. Buy Ammo");
+            Console.WriteLine($"1. Buy Food🍖");
+            Console.WriteLine($"2. Buy Ammo🔫");
             Console.Write("Enter your choice: ");
             int choice = int.Parse(Console.ReadLine());
 
@@ -145,28 +148,17 @@ namespace OregonTrailGame
         private void HunterEncounter(Player player)
         {
             var inventory = player.Inventory;
-            Console.WriteLine("You meet a hunter with surplus food.");
+            Console.WriteLine($"You meet a hunter with surplus food.🍖");
 
-            Console.WriteLine("You can lend items to the hunter.");
-            Console.Write("Enter amount of food to lend: ");
-            int foodToLend = int.Parse(Console.ReadLine());
-
-            if (inventory.ConsumeFood(foodToLend))
-            {
-                Console.WriteLine($"You lent {foodToLend} units of food to the hunter.");
-                int foodGained = foodToLend; // you get the same amount back
+            int huntergiven = random.Next(1, 100);
+                Console.WriteLine($"You where given {huntergiven} units of food.");
+                int foodGained = huntergiven; // you get the same amount back
                 inventory.AddFood(foodGained);
-                Console.WriteLine($"The hunter gave you {foodGained} units of food in return.");
-            }
-            else
-            {
-                Console.WriteLine("You don't have enough food to lend.");
-            }
         }
 
 private void WildAnimalEncounter(Player player)
 {
-    Console.WriteLine("You encounter a wild animal!");
+    Console.WriteLine($"You encounter a wild animal and try to hunt it!🦬");
 
     int huntOutcome = random.Next(1, 11); // Simulate hunting success with a 50% chance
 
@@ -178,7 +170,7 @@ private void WildAnimalEncounter(Player player)
     }
     else
     {
-        Console.WriteLine("The hunt was unsuccessful!");
+        Console.WriteLine($"The hunt was unsuccessful!😭");
 
         // Check if there are any party members left
         if (player.Inventory.PartyMembers.Count > 0)
@@ -191,11 +183,11 @@ private void WildAnimalEncounter(Player player)
             player.Inventory.ReducePartyCount();
             if (player.Inventory.AreAllPartyMembersDead())
             {
-                Console.WriteLine("All party members are dead. Game Over.");
+                Console.WriteLine($"All party members are dead. Game Over.💀");
             }
             else
             {
-                Console.WriteLine($"Remaining party members:");
+                Console.WriteLine($"Remaining party members:💀");
                 foreach (var member in player.Inventory.PartyMembers)
                 {
                     Console.WriteLine(member);
@@ -204,7 +196,7 @@ private void WildAnimalEncounter(Player player)
         }
         else
         {
-            Console.WriteLine("No party members left to be harmed You now Die. Game Over.");
+            Console.WriteLine($"No party members left to be harmed You now Die. Game Over.💀");
         }
     }
 }
@@ -212,9 +204,9 @@ private void WildAnimalEncounter(Player player)
 
         private void FunEncounter(Player player)
         {
-            Console.WriteLine("You stumble upon a carnival with games and fun!");
+            Console.WriteLine($"You stumble upon a carnival with games and fun!🎉");
 
-            Console.WriteLine("You can play a game for a chance to win prizes.");
+            Console.WriteLine("You play a game for a chance to win prizes.");
             int prize = random.Next(1, 6); // 1 to 5 prize levels
 
             switch (prize)
@@ -238,7 +230,7 @@ private void WildAnimalEncounter(Player player)
                     player.Inventory.AddMoney(50);
                     break;
                 case 5:
-                    Console.WriteLine("You won nothing this time. Better luck next time!");
+                    Console.WriteLine($"You won nothing this time. Better luck next time!😭");
                     break;
             }
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace OregonTrailGame
 {
@@ -10,10 +11,12 @@ namespace OregonTrailGame
 
         protected override void HandleDisaster()
         {
-            Console.WriteLine("A stampede has caused chaos.");
-            if (random.NextDouble() < 0.03) // 3% chance
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine($"A stampede has caused chaos.🐃🦬");
+            if (random.NextDouble() < 0.05) // 5% chance
             {
-                Console.WriteLine("Multiple family members have died in the stampede.");
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.WriteLine($"Multiple family members have died in the stampede.💀💀");
                 int deaths = random.Next(2, 4);
                 for (int i = 0; i < deaths; i++)
                 {
@@ -31,7 +34,8 @@ namespace OregonTrailGame
                 int lostAmmo = random.Next(3, 6);
                 player.Inventory.ConsumeFood(lostFood);
                 player.Inventory.ConsumeAmmo(lostAmmo);
-                Console.WriteLine($"You lose {lostFood} units of food and {lostAmmo} units of ammo.");
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.WriteLine($"You lose {lostFood}🥩 units of food and {lostAmmo}🔫 units of ammo.");
             }
         }
     }
