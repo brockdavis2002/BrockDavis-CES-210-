@@ -9,8 +9,6 @@ namespace OregonTrailGame
         private int food;
         private int ammo;
         private int money;
-
-        // Add a property to manage the number of party members
         public int PartyCount { get; private set; }
         public List<string> PartyMembers { get; private set; }
 
@@ -60,6 +58,7 @@ namespace OregonTrailGame
         {
             ammo += amount;
         }
+        
 
         public bool SpendMoney(int amount)
         {
@@ -79,6 +78,37 @@ namespace OregonTrailGame
         {
             money += amount;
         }
+
+        public void ReducePartyCount()
+        {
+            if (PartyCount > 0)
+            {
+                PartyCount--;
+                PartyMembers.RemoveAt(new Random().Next(PartyMembers.Count)); // Remove a random member
+            }
+        }
+
+        public bool AreAllPartyMembersDead()
+        {
+            return PartyCount <= 0;
+        }
+
+        // Getter method
+        public int GetFood()
+        {
+            return food;
+        }
+
+        public int GetAmmo()
+        {
+            return ammo;
+        }
+
+        public int GetMoney()
+        {
+            return money;
+        }
+
 
         public void DisplayInventory()
         {

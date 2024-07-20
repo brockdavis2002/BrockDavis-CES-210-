@@ -11,8 +11,7 @@ namespace OregonTrailGame
         public override void Visit(Player player)
         {
             Console.WriteLine($"You have reached the river: {Name}");
-            Console.WriteLine("Crossing the river...");
-            Interact(player); // Call the interact method for player interaction
+            Interact(player);
         }
 
         public void Interact(Player player)
