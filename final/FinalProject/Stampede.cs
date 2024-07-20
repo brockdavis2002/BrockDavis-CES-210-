@@ -3,6 +3,7 @@ using System.Text;
 
 namespace OregonTrailGame
 {
+    [Serializable]
     public class Stampede : Disaster
     {
         public Stampede(Player player) : base(player) { }

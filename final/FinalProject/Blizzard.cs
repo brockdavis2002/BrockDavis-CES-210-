@@ -2,6 +2,7 @@ using System;
 using System.Text;
 namespace OregonTrailGame
 {
+    [Serializable]
     public class Blizzard : Disaster
     {
         public Blizzard(Player player) : base(player) { }

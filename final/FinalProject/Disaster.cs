@@ -2,6 +2,7 @@ using System;
 using System.Text;
 namespace OregonTrailGame
 {
+    [Serializable]
     public abstract class Disaster : Event
     {
         protected Player player;

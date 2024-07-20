@@ -1,29 +1,37 @@
 using System;
 using System.Text;
+
 namespace OregonTrailGame
 {
+    [Serializable]
     public class River : Location
     {
+        private int crossingDifficulty;
+
         public River(string name) : base(name)
         {
         }
 
         public override void Visit(Player player)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.Clear();
+            Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine($"You have reached the river: {Name}💦");
             Interact(player);
         }
 
-        public void Interact(Player player)
+        private void Interact(Player player)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
+
+            // Set the crossing difficulty once when the river is first visited
+            crossingDifficulty = new Random().Next(1, 11); // Simulate crossing difficulty
+
             Console.WriteLine($"You approach {Name}.💦");
-            int crossingDifficulty = new Random().Next(1, 11); // Simulate crossing difficulty
             Console.WriteLine($"The river crossing difficulty is {crossingDifficulty}.");
             Console.WriteLine("You need to decide how to cross the river.");
-            Console.WriteLine($"1. Float/Swim across the river🥽");
-            Console.WriteLine($"2. Pay for a raft to take you across.🛶");
+            Console.WriteLine("1. Float/Swim across the river🥽");
+            Console.WriteLine("2. Pay for a raft to take you across.🛶");
 
             int choice = GetPlayerChoice(1, 2);
 
@@ -46,7 +54,6 @@ namespace OregonTrailGame
 
         private void FloatSwimAcross(Player player)
         {
-            int crossingDifficulty = new Random().Next(1, 11); // Simulate crossing difficulty
             Console.WriteLine($"The river crossing difficulty is {crossingDifficulty}.");
 
             bool success = new Random().Next(1, 101) <= 50; // 50% chance of success
@@ -65,8 +72,7 @@ namespace OregonTrailGame
 
                 player.Inventory.ConsumeFood(foodLost);
                 player.Inventory.ConsumeAmmo(ammoLost);
-                Console.OutputEncoding = System.Text.Encoding.UTF8;
-                Console.WriteLine($"You lost {foodLost} units of food 🍖and {ammoLost} units of ammo🔫.");
+                Console.WriteLine($"You lost {foodLost} units of food 🍖 and {ammoLost} units of ammo 🔫.");
 
                 // Check for family member risk
                 if (crossingDifficulty >= 6) // Medium or hard difficulty
@@ -81,13 +87,11 @@ namespace OregonTrailGame
                             int index = new Random().Next(player.FamilyMembers.Count);
                             string deceasedMember = player.FamilyMembers[index];
                             player.FamilyMembers.RemoveAt(index);
-                            Console.OutputEncoding = System.Text.Encoding.UTF8;
-                            Console.WriteLine($"{deceasedMember} has died due to the failed crossing💀.");
+                            Console.WriteLine($"{deceasedMember} has died due to the failed crossing 💀.");
                         }
                         else
                         {
-                            Console.OutputEncoding = System.Text.Encoding.UTF8;
-                            Console.WriteLine($"All family members have already perished.💀");
+                            Console.WriteLine("All family members have already perished 💀.");
                         }
                     }
                 }
@@ -99,15 +103,13 @@ namespace OregonTrailGame
 
                     if (player.Inventory.GetMoney() >= repairCost)
                     {
-                        Console.OutputEncoding = System.Text.Encoding.UTF8;
                         player.Inventory.SpendMoney(repairCost);
-                        Console.WriteLine($"You need to pay ${repairCost} to repair the wagon.💲");
+                        Console.WriteLine($"You need to pay ${repairCost} to repair the wagon 💲.");
                     }
                     else
                     {
-                        Console.OutputEncoding = System.Text.Encoding.UTF8;
-                        Console.WriteLine($"You do not have enough money to repair the wagon.💲");
-                        Console.WriteLine($"You have lost the game due to lack of funds for repairs.😭");
+                        Console.WriteLine("You do not have enough money to repair the wagon 💲.");
+                        Console.WriteLine("You have lost the game due to lack of funds for repairs 😭.");
                         Environment.Exit(0); // End the game
                     }
                 }
@@ -116,10 +118,8 @@ namespace OregonTrailGame
 
         private void PayForRaft(Player player)
         {
-            int crossingDifficulty = new Random().Next(1, 11); // Simulate crossing difficulty
             int raftCost = CalculateRaftCost(crossingDifficulty);
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Console.WriteLine($"The cost to hire a raft is ${raftCost}.🛶💲");
+            Console.WriteLine($"The cost to hire a raft is ${raftCost} 🛶💲.");
 
             if (player.Inventory.GetMoney() >= raftCost)
             {
@@ -128,9 +128,8 @@ namespace OregonTrailGame
             }
             else
             {
-                Console.OutputEncoding = System.Text.Encoding.UTF8;
-                Console.WriteLine($"You don't have enough money to pay for the raft.💲");
-                Console.WriteLine($"You must try another method to cross the river.😭");
+                Console.WriteLine("You don't have enough money to pay for the raft 💲.");
+                Console.WriteLine("You must try another method to cross the river 😭.");
                 FloatSwimAcross(player); // Offer another attempt to cross
             }
         }
@@ -149,7 +148,8 @@ namespace OregonTrailGame
             while (!validChoice)
             {
                 Console.Write("Enter your choice: ");
-                if (int.TryParse(Console.ReadLine(), out choice))
+                string input = Console.ReadLine();
+                if (int.TryParse(input, out choice))
                 {
                     if (choice >= min && choice <= max)
                     {

@@ -3,6 +3,7 @@ using System.Text;
 
 namespace OregonTrailGame
 {
+    [Serializable]
     class Hunting
     {
         private Random random;

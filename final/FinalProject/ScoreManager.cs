@@ -2,6 +2,7 @@ using System;
 
 namespace OregonTrailGame
 {
+    [Serializable]
     public class ScoreManager
     {
         private int turns;
@@ -14,6 +15,18 @@ namespace OregonTrailGame
         public void IncrementTurns()
         {
             turns++;
+        }
+
+        public void SetTurns(int newTurns)
+        {
+            if (newTurns >= 0) // Ensure turns are not negative
+            {
+                turns = newTurns;
+            }
+            else
+            {
+                throw new ArgumentException("Number of turns cannot be negative.");
+            }
         }
 
         public int GetTurns()

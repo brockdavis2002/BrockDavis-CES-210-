@@ -2,6 +2,7 @@ using System;
 
 namespace OregonTrailGame
 {
+    [Serializable]
     public abstract class Event
     {
         public abstract void Occur(Player player);

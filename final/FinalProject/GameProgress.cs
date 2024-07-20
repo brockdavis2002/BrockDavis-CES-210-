@@ -1,8 +1,10 @@
 using System;
 using System.Text;
+using System;
 
 namespace OregonTrailGame
 {
+    [Serializable]
     public class GameProgress
     {
         private int totalTowns;
@@ -20,7 +22,6 @@ namespace OregonTrailGame
         public void UpdateProgress(int currentTurn)
         {
             this.currentTurn = currentTurn;
-            // Calculate progress based on turns
             int maxTurns = totalTowns * 10; // Adjust multiplier for progress scale
             currentProgress = (int)((double)currentTurn / maxTurns * TotalSpaces);
         }

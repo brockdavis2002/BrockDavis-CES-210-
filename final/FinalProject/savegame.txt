@@ -1,0 +1,4 @@
+Name:bob
+Health:100
+Money:0
+FamilyMembers:1,2,3,4

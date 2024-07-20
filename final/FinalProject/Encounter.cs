@@ -2,6 +2,7 @@ using System;
 using System.Text;
 namespace OregonTrailGame
 {
+    [Serializable]
     public class Encounter : Event
     {
         private Random random = new Random();
@@ -66,14 +67,22 @@ namespace OregonTrailGame
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var inventory = player.Inventory;
             Console.WriteLine($"You meet a trader.🧐");
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("You can trade food for money or ammo.💲");
             Console.Write("Enter amount of food to trade: ");
-            int foodToTrade = int.Parse(Console.ReadLine());
+
+            string input = Console.ReadLine();
+            int foodToTrade;
+
+            // Try to parse the input, default to 0 if parsing fails or input is empty
+            if (!int.TryParse(input, out foodToTrade) || foodToTrade < 0)
+            {
+                Console.WriteLine("Invalid input. Please enter a positive number.");
+                return; // Exit the method if input is invalid
+            }
 
             if (inventory.ConsumeFood(foodToTrade))
             {
-                int moneyEarned = foodToTrade * 2; //conversion rate
+                int moneyEarned = foodToTrade * 2; // Conversion rate
                 inventory.AddMoney(moneyEarned);
                 Console.WriteLine($"You traded {foodToTrade} units of food for ${moneyEarned}.");
             }
@@ -83,6 +92,7 @@ namespace OregonTrailGame
             }
         }
 
+
         private void MerchantEncounter(Player player)
         {
             var inventory = player.Inventory;
@@ -91,28 +101,43 @@ namespace OregonTrailGame
             // Generate random costs for food and ammo
             int costPerUnitFood = random.Next(1, 11); // Random cost between $1 and $10 per unit of food
             int costPerUnitAmmo = random.Next(1, 11); // Random cost between $1 and $10 per unit of ammo
+
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine($"You meet a merchant.🤑");
 
             // Display current supplies and money
             Console.WriteLine("\nCurrent Supplies:");
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine($"Food: {inventory.GetFood()} units🍖");
             Console.WriteLine($"Ammo: {inventory.GetAmmo()} units🔫");
             Console.WriteLine($"Money: ${inventory.GetMoney()}💲");
 
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("\nYou can buy supplies from the merchant.");
             Console.WriteLine($"1. Buy Food🍖");
             Console.WriteLine($"2. Buy Ammo🔫");
             Console.Write("Enter your choice: ");
-            int choice = int.Parse(Console.ReadLine());
+
+            string choiceInput = Console.ReadLine();
+            int choice;
+            
+            // Validate choice input
+            if (!int.TryParse(choiceInput, out choice) || (choice != 1 && choice != 2))
+            {
+                Console.WriteLine("Invalid choice.");
+                return; // Exit the method if the choice is invalid
+            }
 
             switch (choice)
             {
                 case 1:
                     Console.Write($"Enter amount of food to buy (Cost: ${costPerUnitFood} per unit): ");
-                    int foodToBuy = int.Parse(Console.ReadLine());
+                    string foodInput = Console.ReadLine();
+                    int foodToBuy;
+                    if (!int.TryParse(foodInput, out foodToBuy) || foodToBuy < 0)
+                    {
+                        Console.WriteLine("Invalid amount. Please enter a positive number.");
+                        return; // Exit the method if the input is invalid
+                    }
+
                     int costOfFood = foodToBuy * costPerUnitFood;
                     if (inventory.SpendMoney(costOfFood))
                     {
@@ -126,7 +151,14 @@ namespace OregonTrailGame
                     break;
                 case 2:
                     Console.Write($"Enter amount of ammo to buy (Cost: ${costPerUnitAmmo} per unit): ");
-                    int ammoToBuy = int.Parse(Console.ReadLine());
+                    string ammoInput = Console.ReadLine();
+                    int ammoToBuy;
+                    if (!int.TryParse(ammoInput, out ammoToBuy) || ammoToBuy < 0)
+                    {
+                        Console.WriteLine("Invalid amount. Please enter a positive number.");
+                        return; // Exit the method if the input is invalid
+                    }
+
                     int costOfAmmo = ammoToBuy * costPerUnitAmmo;
                     if (inventory.SpendMoney(costOfAmmo))
                     {
@@ -138,11 +170,9 @@ namespace OregonTrailGame
                         Console.WriteLine("Not enough money.");
                     }
                     break;
-                default:
-                    Console.WriteLine("Invalid choice.");
-                    break;
             }
         }
+
 
 
         private void HunterEncounter(Player player)

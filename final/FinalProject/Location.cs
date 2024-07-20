@@ -2,11 +2,12 @@ using System;
 
 namespace OregonTrailGame
 {
+    [Serializable]
     public abstract class Location
     {
         public string Name { get; private set; }
 
-        public Location(string name)
+        protected Location(string name)
         {
             Name = name;
         }

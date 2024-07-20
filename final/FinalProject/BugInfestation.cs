@@ -2,6 +2,7 @@ using System;
 using System.Text;
 namespace OregonTrailGame
 {
+    [Serializable]
     public class BugInfestation : Disaster
     {
         public BugInfestation(Player player) : base(player) { }

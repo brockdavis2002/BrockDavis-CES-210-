@@ -2,6 +2,7 @@ using System;
 using System.Text;
 namespace OregonTrailGame
 {
+    [Serializable]
     public class FlashFlooding : Disaster
     {
         public FlashFlooding(Player player) : base(player) { }

@@ -2,6 +2,7 @@ using System;
 using System.Text;
 namespace OregonTrailGame
 {
+    [Serializable]
     public class Tornado : Disaster
     {
         public Tornado(Player player) : base(player) { }

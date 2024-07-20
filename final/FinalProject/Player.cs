@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+
 namespace OregonTrailGame
 {
     [Serializable]
@@ -34,7 +36,7 @@ namespace OregonTrailGame
 
         public void Rest(int turns)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine($"You rest for {turns} turns and regain some health❤️‍🩹.");
 
             for (int i = 0; i < turns; i++)
@@ -44,7 +46,7 @@ namespace OregonTrailGame
                     Console.WriteLine($"Not enough food to continue resting!🍖");
                     break;
                 }
-                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.OutputEncoding = Encoding.UTF8;
                 Health += 10; // Regain health per turn
                 if (Health > 100) Health = 100; // Cap health at 100%
                 Console.WriteLine($"Health is now {Health}.❤️‍🩹");
@@ -54,11 +56,10 @@ namespace OregonTrailGame
 
         public void CheckSupplies()
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
             Console.WriteLine("Current Supplies:");
             Inventory.DisplayInventory();
-            Console.WriteLine($"\nMoney: ${Money}💲");
             Console.WriteLine($"\nFamily Members:👨‍👩‍👧‍👦");
             foreach (var member in FamilyMembers)
             {
@@ -76,7 +77,7 @@ namespace OregonTrailGame
 
         public void AddMoney(int amount)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
             Money += amount;
             Console.WriteLine($"Added ${amount}. Money now: ${Money}💲");
         }
@@ -85,13 +86,13 @@ namespace OregonTrailGame
         {
             if (Money >= amount)
             {
-                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.OutputEncoding = Encoding.UTF8;
                 Money -= amount;
                 Console.WriteLine($"Spent ${amount}. Money left: ${Money}💲");
             }
             else
             {
-                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.OutputEncoding = Encoding.UTF8;
                 Console.WriteLine($"Not enough money!😭");
             }
         }
@@ -100,7 +101,7 @@ namespace OregonTrailGame
         {
             if (FamilyMembers.Remove(memberName))
             {
-                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.OutputEncoding = Encoding.UTF8;
                 Inventory.ReducePartyCount();
                 Console.WriteLine($"{memberName} has died.🪦");
                 if (Inventory.PartyCount == 0)
@@ -112,6 +113,68 @@ namespace OregonTrailGame
             else
             {
                 Console.WriteLine($"{memberName} not found in the family.");
+            }
+        }
+
+        public void SaveToFile(string filename)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(filename))
+                {
+                    writer.WriteLine($"Name:{Name}");
+                    writer.WriteLine($"Health:{Health}");
+                    writer.WriteLine($"Money:{Money}");
+                    Inventory.SaveToFile(filename); // Save inventory data
+                    writer.WriteLine($"FamilyMembers:{string.Join(",", FamilyMembers)}");
+                }
+                Console.WriteLine("Player data saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving player data: {ex.Message}");
+            }
+        }
+
+        public void LoadFromFile(string filename)
+        {
+            try
+            {
+                using (StreamReader reader = new StreamReader(filename))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        var parts = line.Split(':');
+                        if (parts.Length == 2)
+                        {
+                            string key = parts[0].Trim();
+                            string value = parts[1].Trim();
+
+                            switch (key)
+                            {
+                                case "Name":
+                                    Name = value;
+                                    break;
+                                case "Health":
+                                    Health = int.Parse(value);
+                                    break;
+                                case "Money":
+                                    Money = int.Parse(value);
+                                    break;
+                                case "FamilyMembers":
+                                    FamilyMembers = new List<string>(value.Split(','));
+                                    break;
+                            }
+                        }
+                    }
+                    Inventory.LoadFromFile(filename); // Load inventory data
+                }
+                Console.WriteLine("Player data loaded successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading player data: {ex.Message}");
             }
         }
     }

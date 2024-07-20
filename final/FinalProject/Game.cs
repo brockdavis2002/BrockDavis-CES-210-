@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Text.Json;
+
 namespace OregonTrailGame
 {
+    [Serializable]
     public class Game
     {
         private Player player;
@@ -13,12 +14,23 @@ namespace OregonTrailGame
         private Random random;
         private int turnsUntilNextTown;
         private ScoreManager scoreManager;
-        private GameProgress gameProgress; // Add this field
+        private GameProgress gameProgress;
 
-        public Game()
+        public Game(bool loadGame)
         {
-            // Initialize game state
-            player = new Player(); // Use default constructor
+            if (loadGame && File.Exists("savegame.txt"))
+            {
+                LoadGame();
+            }
+            else
+            {
+                InitializeNewGame();
+            }
+        }
+
+        private void InitializeNewGame()
+        {
+            player = new Player();
             locations = new List<Location>
             {
                 new Town("Independence"),
@@ -45,7 +57,7 @@ namespace OregonTrailGame
             random = new Random();
             turnsUntilNextTown = random.Next(10, 21); // Random turns between 10 and 20
             scoreManager = new ScoreManager();
-            gameProgress = new GameProgress(locations.Count); // Initialize GameProgress
+            gameProgress = new GameProgress(locations.Count);
 
             Start();
         }
@@ -59,24 +71,20 @@ namespace OregonTrailGame
         private void InitializeGame()
         {
             Console.Clear();
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine($"🤠🐂Welcome to The Oregon Trail!🐂🤠");
 
-            // Initialize player
             Console.Write("Enter your name: ");
             string playerName = Console.ReadLine();
-            player.SetName(playerName); // Use SetName method to set the player's name
+            player.SetName(playerName);
 
-            // Add family members
             for (int i = 1; i <= 4; i++)
             {
-                Console.OutputEncoding = System.Text.Encoding.UTF8;
                 Console.Write($"🙂Enter the name of family member {i}: ");
                 string familyMemberName = Console.ReadLine();
                 player.AddFamilyMember(familyMemberName);
             }
 
-            // Initialize player inventory with some starting items
             player.Inventory.AddFood(90);
             player.Inventory.AddAmmo(50);
         }
@@ -87,10 +95,9 @@ namespace OregonTrailGame
 
             while (!gameOver)
             {
-                scoreManager.IncrementTurns(); // Increment the turn count
+                scoreManager.IncrementTurns();
 
-                // Consume food based on number of party members
-                int foodConsumed = random.Next(1, 5) * player.Inventory.PartyCount; // Random amount per turn
+                int foodConsumed = random.Next(1, 5) * player.Inventory.PartyCount;
                 if (!player.Inventory.ConsumeFood(foodConsumed))
                 {
                     Console.WriteLine($"You ran out of food! Game Over.☠️");
@@ -102,7 +109,6 @@ namespace OregonTrailGame
 
                 if (turnsUntilNextTown <= 0)
                 {
-                    // Move to the next location
                     currentLocationIndex++;
                     if (currentLocationIndex >= locations.Count)
                     {
@@ -113,38 +119,24 @@ namespace OregonTrailGame
                     else
                     {
                         Location currentLocation = locations[currentLocationIndex];
-
-                        // Visit the new location
                         currentLocation.Visit(player);
 
-                        // Handle specific logic for towns
                         if (currentLocation is Town town)
                         {
-                            player.Inventory.AddMoney(25); // Add $25 at each town
+                            player.Inventory.AddMoney(25);
                             Console.WriteLine($"You have reached {town.Name}. You received $25.💲");
                         }
 
-                        // Reset the turns until next town
-                        turnsUntilNextTown = random.Next(5, 21); // Sets the number of moves between towns to between 5 and 20
-
-                        // Update game progress after reaching a town
-                        gameProgress.UpdateProgress(scoreManager.GetTurns()); // Update progress based on turn count
-
+                        turnsUntilNextTown = random.Next(5, 21);
+                        gameProgress.UpdateProgress(scoreManager.GetTurns());
                     }
                 }
 
-                // Clear the console
                 Console.Clear();
-
-                // Update and display the game progress bar
-                gameProgress.DisplayProgress(); // Display progress bar
-
-                // Display the number of moves until the next town and towns left
+                gameProgress.DisplayProgress();
                 Console.WriteLine($"Moves until next town: {turnsUntilNextTown}🛖");
                 Console.WriteLine($"Towns left to reach: {locations.Count - currentLocationIndex - 1}");
-
-                // Display game menu
-                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.OutputEncoding = Encoding.UTF8;
                 Console.WriteLine($"1. Continue🐂");
                 Console.WriteLine($"2. Rest😴");
                 Console.WriteLine($"3. Hunt🍖");
@@ -152,6 +144,8 @@ namespace OregonTrailGame
                 Console.WriteLine($"5. Save and Quit🚩");
 
                 int choice = GetPlayerChoice(1, 5);
+                Console.WriteLine("");
+                Console.WriteLine("");
                 string outcomeMessage = "";
 
                 switch (choice)
@@ -160,13 +154,12 @@ namespace OregonTrailGame
                         outcomeMessage = "You choose to continue.";
                         break;
                     case 2:
-                        Console.OutputEncoding = System.Text.Encoding.UTF8;
                         Console.Write($"Enter number of turns to rest:💤 ");
                         if (int.TryParse(Console.ReadLine(), out int restTurns) && restTurns > 0)
                         {
                             player.Rest(restTurns);
                             outcomeMessage = "You rested and regained some health.";
-                            scoreManager.IncrementTurns(); // Increment turns when resting
+                            scoreManager.IncrementTurns();
                         }
                         else
                         {
@@ -177,7 +170,7 @@ namespace OregonTrailGame
                         Hunting hunting = new Hunting();
                         hunting.Hunt(player.Inventory);
                         outcomeMessage = "You went hunting.";
-                        scoreManager.IncrementTurns(); // Increment turns when hunting
+                        scoreManager.IncrementTurns();
                         break;
                     case 4:
                         player.CheckSupplies();
@@ -185,34 +178,49 @@ namespace OregonTrailGame
                         break;
                     case 5:
                         SaveGame();
-                        Console.OutputEncoding = System.Text.Encoding.UTF8;
                         Console.WriteLine($"Game saved. Goodbye!👋");
-                        gameOver = true;
-                        continue; // Skip the rest of the loop to end the game
+                        Environment.Exit(0); // Terminate the program
+                        break;
                 }
 
-                // Handle random event each turn, but after town logic
-                if (choice != 5) // Only handle events if not saving
+                if (choice != 5)
                 {
                     EventManager.HandleRandomEvent(player);
                 }
 
-                // Display the outcome message and wait for Enter key
                 Console.WriteLine(outcomeMessage);
                 Console.WriteLine("\nPress Enter to continue...");
                 Console.ReadLine();
             }
 
-            EndGame(); // End the game and show score
+            EndGame();
         }
 
         private void SaveGame()
         {
             try
             {
-                // Serialize game state to JSON
-                string json = JsonSerializer.Serialize(this);
-                File.WriteAllText("savegame.json", json);
+                // Prepare save data
+                var saveData = new StringBuilder();
+                saveData.AppendLine($"PlayerName:{player.Name}");
+                saveData.AppendLine($"Money:{player.Inventory.GetMoney()}");
+                saveData.AppendLine($"Food:{player.Inventory.GetFood()}");
+                saveData.AppendLine($"Ammo:{player.Inventory.GetAmmo()}");
+                saveData.AppendLine($"CurrentLocationIndex:{currentLocationIndex}");
+                saveData.AppendLine($"TurnsUntilNextTown:{turnsUntilNextTown}");
+
+                // Save locations
+                saveData.AppendLine($"LocationsCount:{locations.Count}");
+                foreach (var location in locations)
+                {
+                    saveData.AppendLine(location.ToString()); // Ensure Location has a ToString method
+                }
+
+                // Save ScoreManager and GameProgress data
+                saveData.AppendLine($"ScoreManagerTurns:{scoreManager.GetTurns()}");
+                saveData.AppendLine($"GameProgress:{gameProgress.ToString()}"); // Ensure GameProgress has a ToString method
+
+                File.WriteAllText("savegame.txt", saveData.ToString());
                 Console.WriteLine("Game saved successfully.");
             }
             catch (Exception ex)
@@ -220,6 +228,66 @@ namespace OregonTrailGame
                 Console.WriteLine($"Error saving game: {ex.Message}");
             }
         }
+
+        private void LoadGame()
+        {
+            try
+            {
+                string[] lines = File.ReadAllLines("savegame.txt");
+
+                // Parse player data
+                player = new Player();
+                player.SetName(GetValueFromLine(lines[0]));
+                player.Inventory.AddMoney(int.Parse(GetValueFromLine(lines[1])));
+                player.Inventory.AddFood(int.Parse(GetValueFromLine(lines[2])));
+                player.Inventory.AddAmmo(int.Parse(GetValueFromLine(lines[3])));
+
+                // Load locations
+                currentLocationIndex = int.Parse(GetValueFromLine(lines[4]));
+                turnsUntilNextTown = int.Parse(GetValueFromLine(lines[5]));
+
+                int locationsCount = int.Parse(GetValueFromLine(lines[6]));
+                locations = new List<Location>();
+
+                for (int i = 0; i < locationsCount; i++)
+                {
+                    string locationData = lines[7 + i];
+                    // Parse and create Location objects based on stored data
+                    locations.Add(ParseLocation(locationData)); // Ensure you have a method to parse location
+                }
+
+                // Load ScoreManager and GameProgress
+                scoreManager = new ScoreManager();
+                scoreManager.SetTurns(int.Parse(GetValueFromLine(lines[7 + locationsCount])));
+
+                gameProgress = new GameProgress(locationsCount);
+                // Parse and set game progress if needed
+
+                
+                Console.WriteLine("Game loaded successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading game: {ex.Message}");
+                InitializeNewGame();
+            }
+        }
+        //used for lading location
+        private Location ParseLocation(string data)
+        {
+            // Example parsing logic
+            if (data.StartsWith("Town:"))
+            {
+                return new Town(data.Substring(5)); // Creates a Town object with the name
+            }
+            else if (data.StartsWith("River:"))
+            {
+                return new River(data.Substring(6)); // Creates a River object with the name
+            }
+            // Add more location types if needed
+            throw new InvalidOperationException("Unknown location type.");
+        }
+
 
         private int GetPlayerChoice(int min, int max)
         {
@@ -253,5 +321,11 @@ namespace OregonTrailGame
         {
             Console.WriteLine($"Game Over! Your score is: {scoreManager.GetTurns()} turns.");
         }
+
+        private string GetValueFromLine(string line)
+        {
+            return line.Split(':')[1];
+        }
+
     }
 }
