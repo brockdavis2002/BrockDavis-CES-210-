@@ -8,7 +8,7 @@ namespace OregonTrailGame
         private Player player;
         private Random random;
         private int requiredRestTurns;
-
+        private Game game;
         public Sickness(Player player)
         {
             this.player = player;
@@ -90,6 +90,7 @@ namespace OregonTrailGame
             {
                 Console.OutputEncoding = System.Text.Encoding.UTF8;
                 Console.WriteLine($"All party members are dead. Game Over.☠️");
+                game.EndGame();
                 Environment.Exit(0); // End the game if all party members are dead
             }
             Console.OutputEncoding = System.Text.Encoding.UTF8;

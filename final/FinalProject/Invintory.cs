@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
-
 namespace OregonTrailGame
 {
     [Serializable]
@@ -60,6 +58,7 @@ namespace OregonTrailGame
         {
             ammo += amount;
         }
+        
 
         public bool SpendMoney(int amount)
         {
@@ -94,13 +93,26 @@ namespace OregonTrailGame
             return PartyCount <= 0;
         }
 
-        public int GetFood() => food;
-        public int GetAmmo() => ammo;
-        public int GetMoney() => money;
+        // Getter method
+        public int GetFood()
+        {
+            return food;
+        }
+
+        public int GetAmmo()
+        {
+            return ammo;
+        }
+
+        public int GetMoney()
+        {
+            return money;
+        }
+
 
         public void DisplayInventory()
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine($"Food: {food} units🍖");
             Console.WriteLine($"Ammo: {ammo} units🔫");
             Console.WriteLine($"Money: ${money}.🤑");
@@ -108,75 +120,6 @@ namespace OregonTrailGame
             foreach (var member in PartyMembers)
             {
                 Console.WriteLine(member);
-            }
-        }
-
-        public void SaveToFile(string filename)
-        {
-            SaveLoadToFile(filename, isSaving: true);
-        }
-
-        public void LoadFromFile(string filename)
-        {
-            SaveLoadToFile(filename, isSaving: false);
-        }
-
-        private void SaveLoadToFile(string filename, bool isSaving)
-        {
-            try
-            {
-                if (isSaving)
-                {
-                    using (StreamWriter writer = new StreamWriter(filename))
-                    {
-                        writer.WriteLine($"Food:{food}");
-                        writer.WriteLine($"Ammo:{ammo}");
-                        writer.WriteLine($"Money:{money}");
-                        writer.WriteLine($"PartyCount:{PartyCount}");
-                        writer.WriteLine($"PartyMembers:{string.Join(",", PartyMembers)}");
-                    }
-                    Console.WriteLine("Inventory data saved successfully.");
-                }
-                else
-                {
-                    using (StreamReader reader = new StreamReader(filename))
-                    {
-                        string line;
-                        while ((line = reader.ReadLine()) != null)
-                        {
-                            var parts = line.Split(':');
-                            if (parts.Length == 2)
-                            {
-                                string key = parts[0].Trim();
-                                string value = parts[1].Trim();
-
-                                switch (key)
-                                {
-                                    case "Food":
-                                        food = int.Parse(value);
-                                        break;
-                                    case "Ammo":
-                                        ammo = int.Parse(value);
-                                        break;
-                                    case "Money":
-                                        money = int.Parse(value);
-                                        break;
-                                    case "PartyCount":
-                                        PartyCount = int.Parse(value);
-                                        break;
-                                    case "PartyMembers":
-                                        PartyMembers = new List<string>(value.Split(','));
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                    Console.WriteLine("Inventory data loaded successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error {(isSaving ? "saving" : "loading")} inventory data: {ex.Message}");
             }
         }
     }

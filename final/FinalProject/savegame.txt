@@ -1,4 +1,9 @@
-Name:bob
-Health:100
-Money:0
-FamilyMembers:1,2,3,4
+PlayerName:Brock
+Money:65
+Food:0
+Ammo:0
+CurrentLocationIndex:2
+TurnsUntilNextTown:1
+Score:69
+PartyCount:4
+PartyMembers:Adult1,Adult2,Child1,Child2

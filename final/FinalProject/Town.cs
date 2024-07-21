@@ -39,8 +39,6 @@ namespace OregonTrailGame
             {
                 // Display current inventory status before making a choice
                 DisplayInventoryStatus(player);
-
-                // Example: Implement buying supplies logic
                 continueShopping = BuySupplies(player);
             }
 

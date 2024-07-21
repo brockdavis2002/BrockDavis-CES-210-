@@ -6,6 +6,7 @@ namespace OregonTrailGame
     public class Encounter : Event
     {
         private Random random = new Random();
+        private Game game;
 
         public override void Occur(Player player)
         {
@@ -214,6 +215,7 @@ private void WildAnimalEncounter(Player player)
             if (player.Inventory.AreAllPartyMembersDead())
             {
                 Console.WriteLine($"All party members are dead. Game Over.💀");
+                game.EndGame();
             }
             else
             {
@@ -227,6 +229,7 @@ private void WildAnimalEncounter(Player player)
         else
         {
             Console.WriteLine($"No party members left to be harmed You now Die. Game Over.💀");
+            game.EndGame();
         }
     }
 }
