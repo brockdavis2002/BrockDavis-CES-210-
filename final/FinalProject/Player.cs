@@ -18,7 +18,7 @@ namespace OregonTrailGame
         {
             Name = playerName;
             Health = 100;
-            Inventory = new Inventory(startingFood: 200, startingAmmo: 60, startingMoney: 150);
+            Inventory = new Inventory(startingFood: 250, startingAmmo: 95, startingMoney: 200);
             FamilyMembers = new List<string>();
             random = new Random();
         }

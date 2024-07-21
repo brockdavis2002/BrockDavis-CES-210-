@@ -64,9 +64,6 @@ namespace OregonTrailGame
                 string familyMemberName = Console.ReadLine();
                 player.AddFamilyMember(familyMemberName);
             }
-
-            player.Inventory.AddFood(90);
-            player.Inventory.AddAmmo(50);
         }
 
         private void RunGameLoop()

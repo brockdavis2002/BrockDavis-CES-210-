@@ -7,8 +7,6 @@ namespace OregonTrailGame
     public class Town : Location
     {
         private const int MoneyAtTown = 25; // Amount of money earned at each town visit
-        private const int FoodPrice = 15;   // Price per unit of food
-        private const int AmmoPrice = 10;   // Price per unit of ammo
 
         public Town(string name) : base(name)
         {
@@ -82,18 +80,27 @@ namespace OregonTrailGame
             return true; // Continue shopping
         }
 
+        private int GetRandomFoodPrice()
+        {
+            Random random = new Random();
+            // Define the price range for food
+            int minPrice = 4;
+            int maxPrice = 20;
+            return random.Next(minPrice, maxPrice + 1); // +1 to include maxPrice in the range
+        }
         private void BuyFood(Player player)
         {
             Console.OutputEncoding = Encoding.UTF8;
-            Console.Write($"Enter amount of food to buy (${FoodPrice} each):🍖 ");
+            int FoodPrice = GetRandomFoodPrice(); // Get a random price for food
+            Console.Write($"Enter amount of food to buy (${FoodPrice} for 4 units):🍖 ");
             if (int.TryParse(Console.ReadLine(), out int amountToBuy) && amountToBuy > 0)
             {
                 int totalCost = amountToBuy * FoodPrice;
-
+                int totalpurchas = amountToBuy * 4;
                 if (player.Inventory.SpendMoney(totalCost))
                 {
-                    player.Inventory.AddFood(amountToBuy);
-                    Console.WriteLine($"You bought {amountToBuy} units of food.🍖");
+                    player.Inventory.AddFood(totalpurchas);
+                    Console.WriteLine($"You bought {totalpurchas} units of food.🍖");
                 }
                 else
                 {
@@ -106,18 +113,27 @@ namespace OregonTrailGame
             }
         }
 
+        private int GetRandomAmmoPrice()
+        {
+            Random random = new Random();
+            // Define the price range for ammo
+            int minPrice = 3;
+            int maxPrice = 25;
+            return random.Next(minPrice, maxPrice + 1); // +1 to include maxPrice in the range
+        }
         private void BuyAmmo(Player player)
         {
+            int AmmoPrice = GetRandomAmmoPrice(); // Get a random price for ammo
             Console.OutputEncoding = Encoding.UTF8;
-            Console.Write($"Enter amount of ammo to buy (${AmmoPrice} each):🔫 ");
+            Console.Write($"Enter amount of ammo to buy (${AmmoPrice} for 5 units):🔫 ");
             if (int.TryParse(Console.ReadLine(), out int amountToBuy) && amountToBuy > 0)
             {
                 int totalCost = amountToBuy * AmmoPrice;
-
+                int totalpurchas = amountToBuy * 5;
                 if (player.Inventory.SpendMoney(totalCost))
                 {
-                    player.Inventory.AddAmmo(amountToBuy);
-                    Console.WriteLine($"You bought {amountToBuy} units of ammo.🔫");
+                    player.Inventory.AddAmmo(totalpurchas);
+                    Console.WriteLine($"You bought {totalpurchas} units of ammo.🔫");
                 }
                 else
                 {

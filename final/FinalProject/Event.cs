@@ -15,7 +15,7 @@ namespace OregonTrailGame
         public static void HandleRandomEvent(Player player)
         {
             // Simulate a random event each turn
-            int randomEvent = random.Next(1, 10); // Range from 1 to 5
+            int randomEvent = random.Next(1, 12); // Range from 1 to 11
 
             Event gameEvent = null;
             switch (randomEvent)
@@ -46,7 +46,14 @@ namespace OregonTrailGame
                     break;
                 case 9:
                     //blank so that no event happens
-                    break;       
+                    break;  
+                case 10:
+                    //blank so that no event happens
+                    break;  
+                case 11:
+                    //blank so that no event happens
+                    break;  
+                         
             }
 
             if (gameEvent != null)
